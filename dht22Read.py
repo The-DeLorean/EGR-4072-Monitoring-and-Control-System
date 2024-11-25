@@ -3,7 +3,7 @@ import time
 import dht
 
 dht_sensor = dht.DHT22(Pin(14))
-dht_sensorIn = dht.DHT22(Pin(13))
+dht_sensorIn = dht.DHT22(Pin(15))
 #Set this to true before calling function || Set to false to exit function
 temp_reading_active = False
 
