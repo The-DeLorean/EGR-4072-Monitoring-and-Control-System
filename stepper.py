@@ -3,8 +3,8 @@ import time
 
 def stepper(percent):
     # Define pins for the A4988 driver
-    STEP_PIN = 16  # STEP pin
-    DIR_PIN = 17   # Direction pin
+    DIR_PIN = 16   # Direction pin
+    STEP_PIN = 17  # STEP pin
     ENABLE_PIN = 18  # Enable pin (optional)
 
     # Set up the pins
