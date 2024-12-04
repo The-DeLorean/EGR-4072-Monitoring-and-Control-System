@@ -3,8 +3,8 @@ import os
 import time
 import dht
 
-dht_sensor_in = dht.DHT22(machine.Pin(14))  # Indoor sensor
-dht_sensor_out = dht.DHT22(machine.Pin(15)) # Outdoor sensor
+dht_sensor_in = dht.DHT22(machine.Pin(14))  # Indoor sensor DRYER
+dht_sensor_out = dht.DHT22(machine.Pin(15)) # Outdoor sensor CONTROL BOX    
 
 adc = machine.ADC(machine.Pin(26))
 V_REF = 3.3  # Reference voltage
