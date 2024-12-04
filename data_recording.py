@@ -2,6 +2,9 @@ import machine
 import os
 import time
 import dht
+import sdcard
+
+
 
 dht_sensor_in = dht.DHT22(machine.Pin(14))  # Indoor sensor DRYER
 dht_sensor_out = dht.DHT22(machine.Pin(15)) # Outdoor sensor CONTROL BOX    
@@ -10,12 +13,13 @@ adc = machine.ADC(machine.Pin(26))
 V_REF = 3.3  # Reference voltage
 
 # SD card configuration
-spi = machine.SPI(1, baudrate=1000000, polarity=0, phase=0, sck=machine.Pin(2), mosi=machine.Pin(3), miso=machine.Pin(4))
+spi = machine.SPI(0, baudrate=1000000, polarity=0, phase=0, sck=machine.Pin(2), mosi=machine.Pin(3), miso=machine.Pin(4))
 cs = machine.Pin(5, machine.Pin.OUT)
 
 # Mount the SD card
 try:
-    sd = machine.SDCard(spi, cs)
+    sd = sdcard.SDCard(spi, cs)
+    #sd = machine.SDCard(spi, cs)
     os.mount(sd, "/sd")
     print("SD card mounted successfully")
 except Exception as e:
