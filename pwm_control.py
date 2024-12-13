@@ -3,7 +3,7 @@ from machine import Pin, PWM
 import time
 
 # Define the GPIO pin connected to the gate of the MOSFET
-fan_pin = Pin(15, Pin.OUT)
+fan_pin = Pin(0, Pin.OUT)
 
 # Set up PWM on the pin
 pwm = PWM(fan_pin)
