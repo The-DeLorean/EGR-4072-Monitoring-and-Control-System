@@ -1,27 +1,24 @@
-import machine
+from machine import ADC
 import time
 
-adc_pin = 26
-adc = machine.ADC(adc_pin)
-resistor = 220
+# Initialize ADC on Pin 26
+adc = ADC(26)
 
-v_ref = 3.3
+def read_voltage(adc_pin, reference_voltage=3.3, resolution=65535):
+    raw_value = adc_pin.read_u16()  # Read the raw 16-bit ADC value
+    return (raw_value / resolution) * reference_voltage
 
-#Pyranometer specifications
-i_min = 4    # Minimum current (mA)
-i_max = 20   # Maximum current (mA)
-irradiance_range = 1800
+def voltage_to_irradiance(voltage, max_voltage=2.5, max_irradiance=1800):
+    if voltage < 0:
+        return 0
+    elif voltage > max_voltage:
+        return max_irradiance
+    else:
+        return (voltage / max_voltage) * max_irradiance
 
-def read_irradiance():
-    adc_value = adc.read_u16()
-    v_measured = (adc_value / 65535) * v_ref
-
-    # Convert voltage to irradiance (W/m²)
-    irradiance = ((v_measured / shunt_resistor) * 1000 - i_min) * (irradiance_range / (i_max - i_min))
-
-    return irradiance
-
+# Main loop
 while True:
-    irradiance = read_irradiance()
-    print("Irradiance: {:.2f} W/m²".format(irradiance))
+    voltage = read_voltage(adc)
+    irradiance = voltage_to_irradiance(voltage)
+    print(f"Voltage: {voltage:.2f} V, Irradiance: {irradiance:.2f} W/m²")
     time.sleep(1)
