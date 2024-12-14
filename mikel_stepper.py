@@ -48,9 +48,11 @@ fan.set_speed(100)  # Set fan to 100% speed
 print("Fan is running at 100% speed.")
 
 # Initialize and control the stepper motor
-stepper = StepperController(dir_pin=16, step_pin=17, enable_pin=18)
+stepper = StepperController(dir_pin=13, step_pin=12, enable_pin=1)
 try:
-    stepper.step_by_percentage(50, direction=1, delay=0.005)  # Rotate stepper motor by 50% of a full revolution
+    stepper.step_by_percentage(15, direction=1, delay=0.005)  # Rotate stepper motor by 50% of a full revolution
+    while(True):
+        print()
     print("Stepper motor moved 50% of a full revolution.")
 finally:
     stepper.disable()
