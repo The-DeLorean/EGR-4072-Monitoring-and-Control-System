@@ -1,0 +1,38 @@
+from machine import ADC, Pin
+import time
+
+# Initialize ADC on Pin 26
+adc = ADC(Pin(26))
+
+# Initialize list to store last 60 irradiance values
+irradiance_values = []
+MAX_SAMPLES = 60
+
+def read_voltage(adc):
+    raw_value = adc.read_u16()  # Read the raw 16-bit ADC value
+    return (raw_value / 65535) * 3.3  # Convert to voltage
+
+def voltage_to_irradiance(voltage, max_voltage=2.5, max_irradiance=1800):
+    if voltage < 0:
+        return 0
+    elif voltage > max_voltage:
+        return max_irradiance
+    else:
+        return (voltage / max_voltage) * max_irradiance
+
+def calculate_running_average(new_value):
+    irradiance_values.append(new_value)
+    
+    if len(irradiance_values) > MAX_SAMPLES:
+        irradiance_values.pop(0)
+    return sum(irradiance_values) / len(irradiance_values)
+
+# Main loop
+while True:
+    voltage = read_voltage(adc)  # Read voltage from ADC
+    irradiance = voltage_to_irradiance(voltage)  # Convert to irradiance
+    avg_irradiance = calculate_running_average(irradiance)  # Calculate running average
+    
+    print(f"Voltage: {voltage:.2f} V, Current Irradiance: {irradiance:.2f} W/m², "
+          f"Avg Irradiance (last {min(len(irradiance_values), MAX_SAMPLES)}): {avg_irradiance:.2f} W/m²")
+    time.sleep(1)
